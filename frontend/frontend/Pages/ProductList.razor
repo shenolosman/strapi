@@ -13,23 +13,23 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-hover table-striped">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Details</th>
-                <th>Price</th>
-                <th>Avaiable</th>
-                <th>Category Name</th>
-                <th>image</th>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Details</th>
+                <th scope="col">Price</th>
+                <th scope="col">Avaiable</th>
+                <th scope="col">Category Name</th>
+                <th scope="col">image</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in productList.data)
             {
                 <tr>
-                    <td>@item.Id</td>
+                    <th scope="row">@item.Id</th>
                     <td>@item.Name</td>
                     <td>@item.Details</td>
                     <td>@item.Price</td>
@@ -43,10 +43,12 @@ else
 }
 @code {
     private ProductsList? productList;
-
+    public string strapi_api_url;
     protected override async Task OnInitializedAsync()
     {
-        productList = await Http.GetFromJsonAsync<ProductsList>("http://localhost:1337/api/products?populate=*");
+        strapi_api_url = Configuration["AppSettings:STRAPI_API_URL"];
+        var urlProducts = "{STRAPI_API_URL}/api/products?populate=*";
+        productList = await Http.GetFromJsonAsync<ProductsList>(urlProducts.Replace("{STRAPI_API_URL}", strapi_api_url));
         if (productList.data != null)
         {
             foreach (var post in productList.data)
