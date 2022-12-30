@@ -1,7 +1,7 @@
-# strapi and blazor webassembly
+# Strapi and Blazor webassembly
 
 
-## strapi backend 
+## Strapi backend 
 
 Created product and category tables and made one to many relation between them. Gave permission to reach via public settings.
 
