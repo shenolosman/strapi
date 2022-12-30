@@ -1,0 +1,84 @@
+﻿@page "/product"
+@inject HttpClient Http
+@using Microsoft.Extensions.Configuration;
+@inject IConfiguration Configuration
+<PageTitle>Products</PageTitle>
+<h1>Product List</h1>
+<NavLink class="nav-link" href="addproduct">
+    <span class="oi oi-bookmark" aria-hidden="true"></span> Add Product
+</NavLink>
+@if (productList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Details</th>
+                <th>Price</th>
+                <th>Avaiable</th>
+                <th>Category Name</th>
+                <th>image</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in productList.data)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Details</td>
+                    <td>@item.Price</td>
+                    <td>@item.Avaiable</td>
+                    <td>@item.Category.Name</td>
+                    <td><img src="@item.Image.Url" width="50%" height="50%" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private ProductsList? productList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        productList = await Http.GetFromJsonAsync<ProductsList>("http://localhost:1337/api/products?populate=*");
+        if (productList.data != null)
+        {
+            foreach (var post in productList.data)
+            {
+                post.Image.Url = "http://localhost:1337" + post.Image.Url;
+            }
+        }
+    }
+
+    public class Product
+    {
+        public int Id { get; set; }
+        public double Price { get; set; }
+        public string Name { get; set; }
+        public bool Avaiable { get; set; }
+        public string Details { get; set; }
+        public Image Image { get; set; }
+        public Category Category { get; set; }
+    }
+    public class Image
+    {
+        public string Url { get; set; }
+    }
+    public class Category
+    {
+        public string Name { get; set; }
+        public bool Avaiable { get; set; }
+
+    }
+
+    public class ProductsList
+    {
+        public List<Product> data { get; set; }
+    }
+}
