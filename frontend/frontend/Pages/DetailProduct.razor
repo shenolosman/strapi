@@ -1,0 +1,92 @@
+﻿@page "/product/{Id}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using System.Text.Json.Serialization
+@using Microsoft.Extensions.Configuration;
+@using Models
+@inject IConfiguration Configuration
+<PageTitle>Product</PageTitle>
+<h3>Detail of Product</h3>
+
+
+@if (productDetails == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <section class="text-body">
+        <div class="container mx-auto flex-column px-5 align-items-center justify-content-center flex-column">
+            <div class="card">
+                <img src="@productDetails.Data.Image.Url" class="card-img-top" alt="@productDetails.Data.Name">
+                <div class="card-body">
+                    <h5 class="card-title">@productDetails.Data.Name</h5>
+                    <p class="card-text">@productDetails.Data.Details</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">@productDetails.Data.Category</li>
+                    <li class="list-group-item">@productDetails.Data.Available</li>
+                    <li class="list-group-item">@productDetails.Data.Price</li>
+                    <li class="list-group-item">@productDetails.Data.Locale</li>
+                </ul>
+                <div class="card-body">
+                    <button class="card-link" @onclick="NavigateToIndexComponent">Back</button>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@code {
+    [Parameter] public string Id { get; set; }
+
+    private PostSingle productDetails = null;
+
+    public string strapi_api_url;
+
+    protected override async Task OnInitializedAsync()
+    {
+        strapi_api_url = Configuration["AppSettings:STRAPI_API_URL"];
+        var url = "{STRAPI_API_URL}/api/products/{Id}?populate=*";
+        url = url.Replace("{STRAPI_API_URL}", strapi_api_url);
+        url = url.Replace("{Id}", Id);
+        productDetails = await Http.GetFromJsonAsync<PostSingle>(url);
+
+        if (productDetails.Data != null)
+        {
+            productDetails.Data.Image.Url = strapi_api_url + productDetails.Data.Image.Url;
+        }
+    }
+
+    private void NavigateToIndexComponent()
+    {
+        NavigationManager.NavigateTo("/product");
+    }
+
+    public class PostSingle
+    {
+        public Data Data { get; set; }
+    }
+    public class Data
+    {
+        public int Id { get; set; }
+        public double Price { get; set; }
+        public string Name { get; set; }
+        public bool Available { get; set; }
+        public string Details { get; set; }
+        public string Locale { get; set; }
+        public Image Image { get; set; }
+        public Category Category { get; set; }
+    }
+
+    public class Image
+    {
+        public string Url { get; set; }
+    }
+
+    public class Category
+    {
+        public string Name { get; set; }
+        public bool Available { get; set; }
+    }
+}

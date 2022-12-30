@@ -56,7 +56,7 @@
         }
       }
     },
-    "avaiable": {
+    "available": {
       "type": "boolean",
       "default": true,
       "pluginOptions": {
