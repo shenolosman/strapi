@@ -18,16 +18,16 @@ else
     <section class="text-body">
         <div class="container mx-auto flex-column px-5 align-items-center justify-content-center flex-column">
             <div class="card">
-                <img src="@productDetails.Data.Image.Url" class="card-img-top" alt="@productDetails.Data.Name">
+                <img src="@productDetails.Data.Image.Url" class="card-img-top" width="400px"  alt="@productDetails.Data.Name">
                 <div class="card-body">
-                    <h5 class="card-title">@productDetails.Data.Name</h5>
+                    <h5 class="card-title">@productDetails.Data.Name.ToUpper()</h5>
                     <p class="card-text">@productDetails.Data.Details</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">@productDetails.Data.Category</li>
-                    <li class="list-group-item">@productDetails.Data.Available</li>
-                    <li class="list-group-item">@productDetails.Data.Price</li>
-                    <li class="list-group-item">@productDetails.Data.Locale</li>
+                    <li class="list-group-item">Category: @productDetails.Data.Category.Name.ToUpper()</li>
+                    <li class="list-group-item">Available: @(productDetails.Data.Available ? "Yes" : "No")</li>
+                    <li class="list-group-item">Price: @productDetails.Data.Price Sek</li>
+                    <li class="list-group-item">Locale: @productDetails.Data.Locale.ToUpper()</li>
                 </ul>
                 <div class="card-body">
                     <button class="card-link" @onclick="NavigateToIndexComponent">Back</button>
