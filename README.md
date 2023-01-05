@@ -27,6 +27,8 @@ strapi password: Passw0rd!
 
 ![backend](/img/strapi-backend-5.png)
 
+![backend](/img/strapi-backend-6.png)
+
 ### Screenshots frontend:
 
 ![frontend](/img/strapi-frontend-1.png)
