@@ -5,11 +5,7 @@
 
 Created product and category tables and made one to many relation between them. Gave permission to reach via public settings.
 
-strapi usename: shenol
 
-strapi mail: shenolyalmazosman@gmail.com
-
-strapi password: Passw0rd!
 
 ## Blazor Webassembly
 
